@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RailsSurvey</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<span class="help-block">
+	<% if flash[:errors] %>
+	    <ul class="messages">
+			  <% flash[:errors].each do |e| %>
+	    		<%= e %>
+	 		 <% end %>
+			</ul>
+	<% end %>
+</span>
+<% if current_user %>
+  <form action="/main/<%=current_user.id%>" method="post">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="_method" value="delete">
+    <input type="submit" class="btn btn-default" value="Log Out">
+  </form>
+<% end %> 
+
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<article>
+
+  <h2> <%= @group.name %> </h2>
+  <p> <%= @group.description %> </p>
+  </br></br></br>
+  <h4><b>Created By:</b><%= @group.user.first_name %> <%= @group.user.last_name %></h4>
+  </br>
+  <p><b>Members:</b></p>
+  </br>
+  <table class="table table-striped table-hover ">
+    <% @group.users.each do |group| %>
+      <tr>
+        <td><%= group.first_name  %> <%= group.last_name %></td>
+      </tr>
+    <% end %>
+  </table>
+  <% if @group.user != current_user %>
+    <% unless @group.users.include?(current_user) %>
+     <form action = "/joins" method = "post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="join[@group_id]" value = "<%= @group.id %>">
+        <input type="submit" name="Join" value = "Join Group">      
+      </form> 
+    <% else %>
+      <form action = "joins/unjoin" method = "post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+         <input type="hidden" name="_method" value="delete">
+         <input type="hidden" name="@group_id" value = "<%= @group.id %>">
+        <input type="submit" name="Unjoin" value = "Leave Group">
+      </form>
+    <% end %>
+  <% end %>
+
+<%= link_to "Dashboard", groups_path %>
+</article>

@@ -1,0 +1,44 @@
+<h2>Hello, <%= current_user.first_name  %> <%= current_user.last_name  %>!</h2>
+
+<h4>Here are the organizations you may join:</h4>
+<div class="left-side">
+	<table class="table table-striped table-hover ">
+	<% if @groups %>
+	  <% @groups.each do |group| %>
+	    <tr>
+	      <td class="col-md-1"><a href="/groups/<%= group.id %>"><%= group.name %></a></td>
+	      <td class="col-md-2"><p>Members</p><%= group.joins.count %></td>
+	      <td class="col-md-3"><%= group.description %></td>
+	      <td class="col-md-4">
+          <% if group.user == current_user %>
+            <form action = "groups/destroy" method = "post">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <input type="hidden" name="group_id" value="<%=group.id %>">
+              <input type = 'submit' value = "Delete">
+            </form>
+          <% end %></td>
+	    </tr>
+	  <% end %>
+	<% end %>
+	</table>
+</div>
+
+<div class="right-side">
+	<h3>Create a new organization:</h3>
+	<div class="user menu col-xs-12">
+	   <form action='/groups/create' style="border:1px solid #ccc" method='POST'>
+	      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	      <div>
+	        <label><b>Org Name:</b></label>
+	        <input type="text" placeholder="Organization name" name="name" required>
+
+	        <label><b>Description:</b></label>
+	        <textarea class="form-control" rows="3" name="description" required></textarea>
+		  </div>
+
+	      <div class="clearfix">
+	        <button type="submit" class="signupbtn">Create</button>
+	      </div>
+	   </form>
+	</div>
+</div>
